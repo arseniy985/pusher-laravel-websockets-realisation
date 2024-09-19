@@ -2,7 +2,7 @@ import axios from "axios";
 import $ from "jquery";
 
 $('input').on('click', () => {
-    axios.post('/message', {
+    axios.post('/api/message', {
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },

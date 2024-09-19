@@ -24,5 +24,7 @@ Route::middleware('auth')->group(function () {
         })->name('user.logout');
     });
 });
+Route::prefix('api')->group(function () {
+    Route::apiResource('message', MessageController::class)->names('message');
+});
 
-Route::apiResource('message', MessageController::class)->names('message');

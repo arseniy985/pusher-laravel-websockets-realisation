@@ -1,11 +1,10 @@
 @extends('templates.main')
 
 @section('additional_links')
-
 @endsection
 
 @section('content')
-    @vite('resources/js/check_docs.js')
+
     @auth
         <article class="grid w-screen justify-items-center gap-y-4 mb-4" id="messageForm">
             @csrf
@@ -14,8 +13,10 @@
         </article>
         @vite('resources/js/message/store_message.js')
     @endauth
+
     <section class="messages" id="messagesContainer">
         @vite('resources/js/message/get_messages.js')
         @vite('resources/js/message/get_new_message.js')
     </section>
+
 @endsection

@@ -10,6 +10,7 @@ use App\Models\Message;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
@@ -19,38 +20,43 @@ class MessageController extends Controller
 
     public function index(IndexMessageRequest $request): JsonResponse
     {
-        $messages = Cache::rememberForever($this->cachePrefix . ':all', function () {
-            return Message::all()->select(['message', 'updated_at', 'user']);
+        $page = $request->get('page', 0);
+        $messages = Cache::tags($this->cachePrefix)->remember($this->cachePrefix . ':' . $page, now()->addDay(), function () use ($page) {
+            return DB::table('messages')
+                ->select('message', 'messages.created_at', 'user_id', DB::raw('users.login as user_login'))
+                ->join('users', 'messages.user_id', '=', 'users.id')
+                ->orderBy('messages.created_at', 'desc')
+                ->skip(20 * $page)
+                ->take(20)
+                ->get();
         });
-//        $messages = Message::with('user')->orderBy('id')->paginate(20);
 
         return response()->json($messages);
     }
 
     public function store(MessageRequest $request): JsonResponse
     {
-        if (! Gate::allows('store')) {
+        if (!Gate::allows('store_message')) {
             return response()->json(['success' => false, 'error' => 'Вы не авторизованы']);
         }
         if (Str::length($request->text) == 0) {
-            return response()->json(['error' => 'Сообщение не может быть пустым']);
+            return response()->json(['success' => false, 'error' => 'Сообщение не может быть пустым']);
         }
-        $messageData = [
+
+        $message = Message::create([
             'message' => $request->text,
             'user_id' => Auth::user()->id
-        ];
-        $pusherData = [
-            'message' => $request->text,
+        ]);
+        Cache::tags('messages')->flush();
+
+        event(new StoreMessageEvent([
+            'message' => $message->message,
+            'user_id' => $message->user_id,
             'user' => [
-                'id' => Auth::id(),
-                'login' => Auth::user()->login,
+                'login' => Auth::user()->login
             ]
-        ];
-        Message::create($messageData);
+        ]));
 
-        event(new StoreMessageEvent($pusherData));
-
-        Cache::forget($this->cachePrefix . ':all');
         return response()->json(['success' => true], 201);
     }
 }
