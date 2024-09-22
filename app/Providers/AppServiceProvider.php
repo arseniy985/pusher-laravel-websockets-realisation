@@ -5,7 +5,6 @@ namespace App\Providers;
 use App\Policies\MessagePolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
-use L5Swagger\L5SwaggerServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {

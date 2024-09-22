@@ -65,4 +65,3 @@ class MessageController extends Controller
         return response()->json(['success' => true], 201);
     }
 }
-

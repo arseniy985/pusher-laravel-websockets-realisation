@@ -1,8 +1,5 @@
 @extends('templates.main')
 
-@section('additional_links')
-@endsection
-
 @section('content')
 
     @auth
@@ -16,7 +13,6 @@
 
     <section class="messages" id="messagesContainer">
         @vite('resources/js/message/get_messages.js')
-{{--        @vite('resources/js/message/get_new_message.js')--}}
     </section>
 
 @endsection
