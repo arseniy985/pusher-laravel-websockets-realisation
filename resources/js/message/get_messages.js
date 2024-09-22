@@ -1,4 +1,5 @@
 import axios from "axios";
+import Pusher from "pusher-js";
 import $ from "jquery";
 
 function renderMessages(messages) {
@@ -10,6 +11,15 @@ function renderMessages(messages) {
            </div>
         `)
     })
+}
+
+function renderNewMessage(message) {
+    $('#messagesContainer').prepend(`
+        <div class="message w-fit bg-gray-100 mb-2 ml-2 p-2 border-2">
+            <h2 class="text-2xl font-bold">${message.user.login}</h2>
+            <p class="text-xl">${message.message}</p>
+        </div>
+    `)
 }
 
 let page = {page: 0};
@@ -39,6 +49,14 @@ function loadMessages() {
 
 // Загружаем первую страницу сообщений
 loadMessages(page.page);
+
+// Обрабатываем новые сообщения
+new Pusher('96d501fee268e058e957', {cluster: 'eu'})
+    .subscribe('messages')
+    .bind('store_message', (message) => {
+        renderNewMessage(message);
+    });
+
 
 // Интервал для проверки прокрутки
 let scrollCheckInterval = null;
