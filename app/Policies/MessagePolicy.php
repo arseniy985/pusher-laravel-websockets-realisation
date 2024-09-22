@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Message;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class MessagePolicy
@@ -12,13 +13,13 @@ class MessagePolicy
         return Auth::check();
     }
 
-    public function destroy(Message $message): bool
+    public function destroy(User $user, $message): bool
     {
-        return Auth::check() && Auth::user()->id == $message->user_id;
+        return Auth::check() && $user->id == $message->user_id;
     }
 
-    public function edit(Message $message): bool
+    public function edit(User $user, $message): bool
     {
-        return Auth::check() && Auth::user()->id == $message->user_id;
+        return Auth::check() && $user->id == $message->user_id;
     }
 }

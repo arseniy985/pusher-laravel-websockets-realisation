@@ -3,24 +3,34 @@ import Pusher from "pusher-js";
 import $ from "jquery";
 
 function renderMessages(messages) {
-    messages.data.forEach((message) => {
-        $('#messagesContainer').append(`
+    if (isset(messages.data)) { // если вызов идет при изначальной загрузки страницы
+        messages.data.forEach((message) => {
+            $('#messagesContainer').append(`
             <div class="message w-fit bg-gray-100 mb-2 ml-2 p-2 border-2">
                <h2 class="text-2xl font-bold">${screen(message.user_login)}</h2>
                <p class="text-xl">${screen(message.message)}</p>
            </div>
         `)
-    })
-}
+        })
+    } else {
+        $('#messagesContainer').prepend(`
+            <div class="message w-fit bg-gray-100 mb-2 ml-2 p-2 border-2">
+                <h2 class="text-2xl font-bold">${screen(messages.user.login)}</h2>
+                <p class="text-xl">${screen(messages.message)}</p>
+            </div>
+        `)
+    }
 
-function renderNewMessage(message) {
-    $('#messagesContainer').prepend(`
-        <div class="message w-fit bg-gray-100 mb-2 ml-2 p-2 border-2">
-            <h2 class="text-2xl font-bold">${screen(message.user.login)}</h2>
-            <p class="text-xl">${screen(message.message)}</p>
-        </div>
-    `)
 }
+//
+// function renderNewMessage(message) {
+//     $('#messagesContainer').prepend(`
+//         <div class="message w-fit bg-gray-100 mb-2 ml-2 p-2 border-2">
+//             <h2 class="text-2xl font-bold">${screen(message.user.login)}</h2>
+//             <p class="text-xl">${screen(message.message)}</p>
+//         </div>
+//     `)
+// }
 
 let page = {page: 0};
 
@@ -36,6 +46,7 @@ function loadMessages() {
     })
         .then(response => {
             console.log('Сообщения загружены-' + page.page);
+            console.log(response.data)
             // Отрисовываем полученные сообщения
             renderMessages(response);
 
@@ -54,7 +65,7 @@ loadMessages(page.page);
 new Pusher('96d501fee268e058e957', {cluster: 'eu'})
     .subscribe('messages')
     .bind('store_message', (message) => {
-        renderNewMessage(message);
+        renderMessages(message);
     });
 
 

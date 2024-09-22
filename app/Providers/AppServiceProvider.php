@@ -23,5 +23,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::define('store_message', [MessagePolicy::class, 'store']);
+        Gate::define('edit_message', [MessagePolicy::class, 'edit']);
+        Gate::define('destroy_message', [MessagePolicy::class, 'destroy']);
+
     }
 }

@@ -28,8 +28,12 @@ class MessageController extends Controller
                 ->orderBy('messages.created_at', 'desc')
                 ->skip(20 * $page)
                 ->take(20)
-                ->get();
+                ->get(); // проверка на возможность изменять сообщение
         });
+
+        foreach ($messages as &$message) {
+            $message->is_this_user = Gate::allows('edit_message', $message);
+        }
 
         return response()->json($messages);
     }
@@ -53,7 +57,8 @@ class MessageController extends Controller
             'message' => $message->message,
             'user_id' => $message->user_id,
             'user' => [
-                'login' => Auth::user()->login
+                'login' => Auth::user()->login,
+                'is_this_user' => Gate::allows('edit_message', $message)
             ]
         ]));
 
