@@ -13,6 +13,14 @@
         function isset(r) {
             return typeof r !== 'undefined';
         }
+
+        function screen(text) {
+            return text.replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
     </script>
     @yield('additional_links')
     <title>OGUZOK messager</title>

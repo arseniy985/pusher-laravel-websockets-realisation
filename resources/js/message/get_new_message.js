@@ -9,3 +9,9 @@ function renderNewMessage(message) {
         </div>
     `)
 }
+
+new Pusher('96d501fee268e058e957', {cluster: 'eu'})
+    .subscribe('messages')
+    .bind('store_message', (message) => {
+        renderNewMessage(message);
+    });

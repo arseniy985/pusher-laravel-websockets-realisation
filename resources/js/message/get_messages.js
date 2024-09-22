@@ -6,8 +6,8 @@ function renderMessages(messages) {
     messages.data.forEach((message) => {
         $('#messagesContainer').append(`
             <div class="message w-fit bg-gray-100 mb-2 ml-2 p-2 border-2">
-               <h2 class="text-2xl font-bold">${message.user_login}</h2>
-               <p class="text-xl">${message.message}</p>
+               <h2 class="text-2xl font-bold">${screen(message.user_login)}</h2>
+               <p class="text-xl">${screen(message.message)}</p>
            </div>
         `)
     })
@@ -16,8 +16,8 @@ function renderMessages(messages) {
 function renderNewMessage(message) {
     $('#messagesContainer').prepend(`
         <div class="message w-fit bg-gray-100 mb-2 ml-2 p-2 border-2">
-            <h2 class="text-2xl font-bold">${message.user.login}</h2>
-            <p class="text-xl">${message.message}</p>
+            <h2 class="text-2xl font-bold">${screen(message.user.login)}</h2>
+            <p class="text-xl">${screen(message.message)}</p>
         </div>
     `)
 }
