@@ -32,7 +32,9 @@ class MessageController extends Controller
         });
 
         foreach ($messages as &$message) {
-            $message->is_this_user = Gate::allows('edit_message', $message);
+            $message->user['is_this_user'] = Gate::allows('edit_message', $message);
+            $message->user['login'] = $message->user_login;
+            unset($message->user_login);
         }
 
         return response()->json($messages);

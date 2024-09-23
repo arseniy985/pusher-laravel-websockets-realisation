@@ -14,5 +14,22 @@
     <section class="messages" id="messagesContainer">
         @vite('resources/js/message/get_messages.js')
     </section>
+    <script>
+        function editMessage(button) {
+            // Получаем id кнопки
+            const buttonId = button.id;
 
+            // Находим тег p с таким же id
+            const pElement = document.querySelector(`p[id="${buttonId}"]`);
+
+            // Заменяем p на textarea
+            const textarea = document.createElement('textarea');
+            textarea.id = buttonId;
+            textarea.value = pElement.textContent;
+            textarea.classList.add('textarea-edit'); // Добавить класс для стилизации (опционально)
+
+            pElement.replaceWith(textarea);
+            button.remove();
+        }
+    </script>
 @endsection

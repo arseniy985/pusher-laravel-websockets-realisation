@@ -31,14 +31,14 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ];
         $user = User::create($data);
-        Auth::login($user);
+        Auth::login($user, true);
 
         return redirect()->route('home.index');
     }
 
     public function login(LoginRequest $request): RedirectResponse
     {
-        if(Auth::attempt($request->only(['login', 'password']))) {
+        if(Auth::attempt($request->only(['login', 'password']), true)) {
             return redirect()->route('home.index');
         };
 
