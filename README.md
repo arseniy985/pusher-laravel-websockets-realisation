@@ -1,9 +1,21 @@
-SIMPLE MESSAGER with websockets on pusher using laravel.
-PLEASE DONT LOOK TO MY JS AND HTML WITH CSS (im backend developer and my frontend is bad)
-TECNOLOGIES:
-  php 8.3
-  laravel 11
-  jquery
-  pusher
-  mysql
+## Installation
+```bash
+npm i
+
+composer install
+
+npm run
+
+php artisan serve
+```
+
+## Description
+SIMPLE MESSAGER with websockets on pusher using laravel. \n
+PLEASE DONT LOOK TO MY JS AND HTML WITH CSS (im backend developer and my frontend is bad) \n
+TECNOLOGIES: \n
+  php 8.3 \n
+  laravel 11 \n
+  jquery \n
+  pusher \n
+  mysql \n
   redis (Cache laravel facade)
