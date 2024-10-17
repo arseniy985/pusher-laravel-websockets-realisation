@@ -1,4 +1,7 @@
 ## Installation
+
+Fill .env (pusher, redis, db)
+
 ```bash
 npm i
 
