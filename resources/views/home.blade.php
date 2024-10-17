@@ -1,6 +1,8 @@
 @extends('templates.main')
 
 @section('additional_links')
+    <meta name="pusher-app-key" content="{{ env('PUSHER_APP_KEY') }}">
+    <meta name="pusher-app-cluster" content="{{ env('PUSHER_APP_CLUSTER') }}">
 @endsection
 
 @section('content')
